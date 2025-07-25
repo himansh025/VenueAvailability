@@ -3,13 +3,13 @@ const {
   addVenue,
   updateVenue,
   deleteVenue,
-  getAll
+  getVenuesWithStatus
 } = require('../controllers/venueController');
 const auth = require('../auth/authMiddleware');
 
 const router = express.Router();
 
-router.get('/',auth.protect, getAll);
+router.get('/status', getVenuesWithStatus)
 router.post('/',  auth.protect,addVenue);
 router.put('/:id',auth.protect,  updateVenue);
 router.delete('/:id',auth.protect,  deleteVenue);

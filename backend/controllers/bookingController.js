@@ -1,64 +1,96 @@
-const Booking = require('../models/Booking');
-const Venue = require('../models/Venue');
-const User = require('../models/User');
+const Booking = require('../models/bookVenueModel');
+const Venue = require('../models/venueModel');
 
-
-exports.bookVenue = async (req, res) => {
+// Create Booking (with conflict check)
+exports.createBooking = async (req, res) => {
   try {
-    const { venue, date, timeSlot, purpose } = req.body;
-    const bookedBy = req.user._id; 
+    const { venueId, date, timeSlot, purpose } = req.body;
+    const userId = req.user._id; // From auth middleware
+console.log( venueId, date, timeSlot, purpose)
+console.log(userId)
+    // Check if already booked for that time
+    const existingBooking = await Booking.findOne({
+      venue: venueId,
+      date,
+      timeSlot,
+      status: 'Booked'
+    });
+    console.log(existingBooking)
 
-    const existing = await Booking.findOne({ venue, date, timeSlot, status: 'Unavailable' });
-
-    if (existing) {
-      return res.status(409).json({ message: 'This venue is already booked for the selected slot.' });
+    if (existingBooking) {
+      return res.status(409).json({ message: 'Venue already booked for this time slot.' });
     }
 
+    // Create booking
     const booking = new Booking({
-      venue,
-      bookedBy,
+      venue: venueId,
+      bookedBy: userId,
       date,
       timeSlot,
       purpose,
-      status: 'Unavailable'
+      status: 'Booked'
     });
+    console.log(booking)
 
     await booking.save();
-    res.status(201).json({ message: 'Booking successful', booking });
-  } catch (error) {
-    res.status(500).json({ message: 'Booking failed', error: error.message });
+    res.status(201).json({ message: 'Booking successful.', booking });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
-// Get all bookings (optionally filter by venue/date/user)
-exports.getBookings = async (req, res) => {
-  try {
-    const filters = req.query; // e.g., ?venue=xyz&date=2025-07-25
-    const bookings = await Booking.find(filters)
-      .populate('venue')
-      .populate('bookedBy', 'name email'); 
-    res.status(200).json({ bookings });
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching bookings', error: error.message });
-  }
-};
-
-// Cancel a booking
+// Cancel Booking
 exports.cancelBooking = async (req, res) => {
   try {
+    console.log("d")
     const bookingId = req.params.id;
+    const user= req.user.id   
+   const { date,timeSlot, venueId } = req.body;
+console.log(bookingId,user,date,timeSlot,venueId)
 
     const booking = await Booking.findById(bookingId);
     if (!booking) return res.status(404).json({ message: 'Booking not found' });
 
-    // Optional: only allow user who booked it or admin to cancel
-    if (!req.user._id.equals(booking.bookedBy)) {
-      return res.status(403).json({ message: 'Unauthorized to cancel this booking' });
-    }
 
-    await Booking.findByIdAndDelete(bookingId);
-    res.status(200).json({ message: 'Booking cancelled successfully' });
-  } catch (error) {
-    res.status(500).json({ message: 'Cancellation failed', error: error.message });
+const reqDate = new Date(date).toISOString().slice(0, 10); // "2025-07-28"
+const bookingDate = new Date(booking.date).toISOString().slice(0, 10);
+if (
+  bookingDate === reqDate &&
+  booking.timeSlot === timeSlot &&
+  booking.venue.equals(venueId) &&
+  booking.bookedBy.equals(user)
+) {
+  booking.status = 'Cancelled';
+  await booking.save();
+  return res.json({ message: 'Booking cancelled.', booking });
+} 
+ else {
+  return res.status(403).json({ message: 'You are not authorized or booking details do not match.' });
+}
+  
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Get All Bookings (optionally filtered)
+exports.getBookings = async (req, res) => {
+  try {
+    const { date, venueId, } = req.query;
+    const filter = {};
+
+    if (date) filter.date = date;
+    if (venueId) filter.venue = venueId;
+
+    const bookings = await Booking.find(filter)
+      .populate('venue', 'name location')
+      .populate('bookedBy', 'name email');
+
+    res.json(bookings);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
   }
 };
