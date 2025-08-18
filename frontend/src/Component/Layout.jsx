@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import Sidebar from './Sidebar';
+// import Sidebar from './';
 import Navbar from './Navbar';
 function Layout() {
   return (
@@ -9,9 +9,9 @@ function Layout() {
       <nav className=' md:hidden'>
       <Navbar /> {/* Show navbar on all pages */}
       </nav>
-      <aside className="hidden md:block md:w-64 bg-gray-950 text-white">
+      {/* <aside className="hidden md:block md:w-64 bg-gray-950 text-white">
         <Sidebar />
-      </aside>
+      </aside> */}
 
       <main className="flex-1 mt-5 overflow-y-auto p-4 md:ml-10 md:mt-5">
         <Outlet />

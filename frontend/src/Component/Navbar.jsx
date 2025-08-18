@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { LogInIcon, LogOut, Menu, UsersIcon, X } from 'lucide-react';
-import { logout } from '../store/slices/authSlice';
+import { LogInIcon, LogOut, Menu, School2Icon, UsersIcon, X } from 'lucide-react';
+import { logout } from '../Store/authSlicer';
 import { useState } from 'react';
 import { MdDashboard, MdOutlineLogin, MdWorkspaces } from 'react-icons/md';
 import { FaSignOutAlt, FaTasks } from 'react-icons/fa';
@@ -34,8 +34,8 @@ function Navbar() {
             </button>
             <Link to="/" className="flex items-center">
               <span className="text-xl font-bold flex items-center">
-                <MdWorkspaces className="h-6 w-6 mr-2" />
-                Project Manager
+                <School2Icon className="h-6 w-6 mr-2" />
+                Venue 
               </span>
             </Link>
           </div>

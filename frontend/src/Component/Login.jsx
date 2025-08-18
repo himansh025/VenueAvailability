@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { LogIn, Mail, Lock } from "lucide-react";
-import { login } from "../store/slices/authSlice";
+import { login } from "../Store/authSlicer";
 import axiosInstance from "../config/apiconfig";
 import { useState } from "react";
 import { z } from "zod";

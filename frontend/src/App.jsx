@@ -1,23 +1,26 @@
-import { Routes, Route} from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Login from './Component/Login';
 import Signup from './Component/Signup';
-import Layout from './components/Layout';
+import Layout from './Component/Layout';
+import HomePage from './Component/HomePage';
 
 function App() {
   const { user } = useSelector(state => state.auth);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Routes>
-          <Route element={<Layout />}>
-              <Route path="/login" element={<Login /> } />
-              <Route path="/register" element={ <Signup />} />
-          
-          </Route>
+    <BrowserRouter>
+      <div className="min-h-screen bg-gray-50">
 
-      </Routes>
-    </div>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Signup />} />
+          </Route>
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 
