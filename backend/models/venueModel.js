@@ -6,6 +6,7 @@ const venueSchema = new mongoose.Schema({
   capacity: Number,
   type: String, 
   // e.g., 'Seminar Hall', 'Classroom', etc.
+  //  isAvailable: { type: Boolean, default: true } 
 });
 
 module.exports = mongoose.model('Venue', venueSchema);

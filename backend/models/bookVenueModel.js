@@ -4,12 +4,20 @@ const bookingSchema = new mongoose.Schema({
   venue: { type: mongoose.Schema.Types.ObjectId, ref: 'Venue', required: true },
   bookedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 
-  date: { type: Date, required: true }, // use Date for comparisons
+  date: { type: Date, required: true },
 
   timeSlot: { 
     type: String, 
     required: true, 
-    enum: ['09:00-10:00', '10:00-11:00', '11:00-12:00', '12:00-13:00','13:00-14:00','14:00-15:00','15:00-14:00'] 
+    enum: [
+      '09:00-10:00', 
+      '10:00-11:00', 
+      '11:00-12:00', 
+      '12:00-13:00',
+      '13:00-14:00',
+      '14:00-15:00',
+      '15:00-16:00'
+    ] 
   },
 
   purpose: { type: String },
@@ -20,7 +28,7 @@ const bookingSchema = new mongoose.Schema({
     default: 'Booked' 
   }
 }, {
-  timestamps: true // adds createdAt and updatedAt
+  timestamps: true
 });
 
 module.exports = mongoose.model('Booking', bookingSchema);

@@ -5,13 +5,13 @@ const {
   deleteVenue,
   getVenuesWithStatus
 } = require('../controllers/venueController');
-const auth = require('../auth/authMiddleware');
+const { protect, requireRole } = require('../auth/authMiddleware');
 
 const router = express.Router();
 
-router.get('/status', getVenuesWithStatus)
-router.post('/',  auth.protect,addVenue);
-router.put('/:id',auth.protect,  updateVenue);
-router.delete('/:id',auth.protect,  deleteVenue);
+router.get('/', getVenuesWithStatus)
+router.post('/',protect,requireRole('superadmin') ,addVenue);
+router.put('/:id',protect,requireRole('superadmin'),   updateVenue);
+router.delete('/:id',protect,requireRole('superadmin'),   deleteVenue);
 
 module.exports = router;
