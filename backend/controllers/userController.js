@@ -88,7 +88,7 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-// 🗂️ Get all users (superadmin only)
+// 🗂️ Get all users
 exports.getAllUsers = async (req, res) => {
   try {
     if (req.user.role !== 'superadmin') {
@@ -96,10 +96,49 @@ exports.getAllUsers = async (req, res) => {
     }
 
     // Exclude password from the response
-    const users = await User.find().select('-password');
+    const users = await User.find({role:{$ne:"superadmin"}}).select('-password');
+    console.log(users)
     res.json(users);
 
   } catch (err) {
     res.status(500).json({ message: 'Error fetching users', error: err.message });
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  try {
+      if (req.user.role !== 'superadmin') {
+      return res.status(403).json({ message: 'Only superadmin can view all users' });
+    }
+
+    const user = await User.findByIdAndDelete(req.params.id);
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.json({ message: "User deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Error deleting user", error: err.message });
+  }
+};
+
+exports.updateUser = async (req, res) => {
+  try {
+    const { name, email, role,password } = req.body;
+
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+  
+
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { name, email, role,hashedPassword },
+      { new: true }
+    ).select("-password");
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.json({ message: "User updated successfully", user });
+  } catch (err) {
+    res.status(500).json({ message: "Error updating user", error: err.message });
   }
 };

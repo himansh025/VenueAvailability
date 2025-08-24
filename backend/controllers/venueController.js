@@ -1,5 +1,6 @@
 const Venue = require('../models/venueModel');
 const Booking = require('../models/bookVenueModel');
+const User = require('../models/userModel')
 
 exports.addVenue = async (req, res) => {
   try {
@@ -17,7 +18,6 @@ exports.addVenue = async (req, res) => {
   }
 };
 
-
 const timeSlots = [
   '09:00-10:00',
   '10:00-11:00',
@@ -27,7 +27,6 @@ const timeSlots = [
   '14:00-15:00',
   '15:00-16:00'
 ];
-
 
 exports.getVenuesWithStatus = async (req, res) => {
   try {
@@ -47,38 +46,56 @@ exports.getVenuesWithStatus = async (req, res) => {
         const bookings = await Booking.find({
           venue: venue._id,
           date: formattedDate,
-          status: 'Booked'
+          status: "Booked",
         });
 
-        const bookedSlots = bookings.map(b => b.timeSlot);
+        // Extract booked slots
+        const bookedSlots = await Promise.all(
+          bookings.map(async (b) => {
+            const user = await User.findById(b.bookedBy).select("name");
+            return {
+              timeSlot: b.timeSlot,
+              bookedBy: {
+                bookingId: b.bookedBy,
+                bookingName: user ? user.name : "unknown"
 
-        // Compute available and unavailable times
-        const availableTimes = timeSlots.filter(slot => !bookedSlots.includes(slot));
-        const unavailableTimes = bookedSlots;
+              }
+            }
+          }))
 
-        // isAvailable flag
+        // Times already booked
+        const unavailableTimes = bookedSlots.map((b) => b.timeSlot);
+
+        // Available = total - booked
+        const availableTimes = timeSlots.filter(
+          (slot) => !unavailableTimes.includes(slot)
+        );
+
+        // Return all bookedBy as array, or [] if none
         const isAvailable = availableTimes.length > 0;
 
         return {
           ...venue.toObject(),
           availableTimes,
           unavailableTimes,
-          isAvailable
+          isAvailable,
+          bookedSlots,   // keep details
         };
       })
     );
 
+    // console.log(venueStatusList)
+
     res.status(200).json({
       success: true,
       count: venueStatusList.length,
-      data: venueStatusList
+      data: venueStatusList,
     });
   } catch (err) {
-    console.error('Error fetching venue status:', err);
-    res.status(500).json({ message: 'Server error' });
+    console.error("Error fetching venue status:", err);
+    res.status(500).json({ message: "Server error" });
   }
 };
-
 
 
 exports.updateVenue = async (req, res) => {

@@ -6,8 +6,8 @@ exports.createBooking = async (req, res) => {
   try {
     const { venueId, date, timeSlot, purpose } = req.body;
     const userId = req.user._id; // From auth middleware
-console.log( venueId, date, timeSlot, purpose)
-console.log(userId)
+// console.log( venueId, date, timeSlot, purpose)
+// console.log(userId)
     // Check if already booked for that time
     const existingBooking = await Booking.findOne({
       venue: venueId,
@@ -15,7 +15,7 @@ console.log(userId)
       timeSlot,
       status: 'Booked'
     });
-    console.log(existingBooking)
+    // console.log(existingBooking)
 
     if (existingBooking) {
       return res.status(409).json({ message: 'Venue already booked for this time slot.' });
@@ -78,7 +78,7 @@ if (
 // Get All Bookings (optionally filtered)
 exports.getBookings = async (req, res) => {
   try {
-    const { date, venueId, } = req.query;
+    const { date, venueId} = req.query;
     const filter = {};
 
     if (date) filter.date = date;

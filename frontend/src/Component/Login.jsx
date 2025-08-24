@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { LogIn, Mail, Lock } from "lucide-react";
-import { login } from "../Store/authSlicer";
+import { login } from "../Store/slicer";
 import axiosInstance from "../config/apiconfig";
 import { useState } from "react";
 import { z } from "zod";
@@ -30,7 +30,7 @@ function Login() {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      const response = await axiosInstance.post("/auth/login", data);
+      const response = await axiosInstance.post("/users/login", data);
       const user = response.data.user;
       if (user) {
         dispatch(login({ user }));
@@ -46,7 +46,7 @@ function Login() {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-8 mt-5">
+    <div className="max-w-md mx-auto bg-white mt-20 rounded-lg shadow-md p-8 ">
       <div className="text-center mb-8">
         <div className="bg-indigo-100 rounded-full p-3 w-12 h-12 mx-auto mb-4 flex items-center justify-center">
           <LogIn className="text-indigo-600" size={24} />
@@ -94,11 +94,11 @@ function Login() {
 
         <button
           type="submit"
-          className="btn-primary w-full flex items-center justify-center gap-2"
+          className="btn-primary w-full flex items-center justify-center px-4 py-2 rounded-3xl bg-blue-400 gap-2"
           disabled={isSubmitting || loading}
         >
           {loading ? (
-            <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
+            <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-blue-500"></div>
           ) : (
             <>
               <LogIn size={18} />
@@ -108,12 +108,7 @@ function Login() {
         </button>
       </form>
 
-      <p className="text-center mt-6 text-gray-600">
-        Don't have an account?{" "}
-        <Link to="/register" className="text-indigo-600 hover:text-indigo-500">
-          Sign up
-        </Link>
-      </p>
+ 
     </div>
   );
 }

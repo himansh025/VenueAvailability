@@ -13,7 +13,6 @@ const SearchComponent = ({ onSearchChange, filters }) => {
     const resetFilters = {
       search: '',
       category: 'all',
-      // sortBy: 'name',
       availability: 'all'
     };
     setLocalFilters(resetFilters);
@@ -22,8 +21,7 @@ const SearchComponent = ({ onSearchChange, filters }) => {
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">Search & Filter</h2>
-      
+   
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {/* Search Input */}
         <div>
@@ -76,24 +74,7 @@ const SearchComponent = ({ onSearchChange, filters }) => {
           </select>
         </div>
 
-        {/* Sort By */}
-        {/* <div>
-          <label htmlFor="sortBy" className="block text-sm font-medium text-gray-700 mb-1">
-            Sort By
-          </label>
-          <select
-            id="sortBy"
-            value={localFilters.sortBy}
-            onChange={(e) => handleInputChange('sortBy', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-          >
-            <option value="name">Name</option>
-            <option value="capacity">Capacity</option>
-            <option value="category">Category</option>
-            <option value="availability">Availability</option>
-          </select>
-        </div> */}
-      {/* Action Buttons */}
+      
       <div className="flex mt-5  justify-center items-center gap-3">
         <button
           onClick={() => handleInputChange('search', localFilters.search)}
@@ -107,18 +88,7 @@ const SearchComponent = ({ onSearchChange, filters }) => {
         >
           Reset
         </button>
-        {/* <button
-          onClick={() => handleInputChange('availability', 'available')}
-          className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-md transition-colors"
-        >
-          Show Available
-        </button> */}
-        {/* <button
-          onClick={() => handleInputChange('category', 'classroom')}
-          className="px-6 py-2 bg-yellow-600 hover:bg-yellow-700 text-white font-medium rounded-md transition-colors"
-        >
-          Classrooms Only
-        </button> */}
+        
       </div>
       </div>
 

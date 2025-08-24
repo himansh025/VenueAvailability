@@ -5,6 +5,6 @@ const auth = require('../auth/authMiddleware'); // Assuming you have one
 
 router.post('/', auth.protect, bookingController.createBooking);
 router.get('/', bookingController.getBookings);
-router.put('/:id', auth.protect, bookingController.cancelBooking);
+router.put('/:bookingId', auth.protect, bookingController.cancelBooking);
 
 module.exports = router;

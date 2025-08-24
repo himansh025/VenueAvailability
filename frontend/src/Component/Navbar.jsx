@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { LogInIcon, LogOut, Menu, School2Icon, UsersIcon, X } from 'lucide-react';
-import { logout } from '../Store/authSlicer';
+import { logout } from '../Store/slicer';
 import { useState } from 'react';
 import { MdDashboard, MdOutlineLogin, MdWorkspaces } from 'react-icons/md';
 import { FaSignOutAlt, FaTasks } from 'react-icons/fa';
@@ -25,7 +25,7 @@ function Navbar() {
         <div className="flex justify-between items-center h-16">
           {/* Logo and Mobile Menu Button */}
           <div className="flex items-center">
-            <button 
+            <button
               onClick={toggleMobileMenu}
               className="mr-4 text-gray-300 hover:text-white"
               aria-label="Toggle mobile menu"
@@ -35,75 +35,71 @@ function Navbar() {
             <Link to="/" className="flex items-center">
               <span className="text-xl font-bold flex items-center">
                 <School2Icon className="h-6 w-6 mr-2" />
-                Venue 
+                Venue
               </span>
             </Link>
+
           </div>
-          
-          {/* User info in header (always visible) */}
-          {user && (
-            <div className="text-sm text-gray-300">
-              Hi, {user.name}
-            </div>
-          )}
+          {user&&(
+              <button
+                        onClick={handleLogout}
+                        className="  md:flex items-center gap-1 border px-2 md:px-3 py-1 md:py-1  bg-red-700 rounded-full hover:text-white"
+                      >
+                        Logout
+                      </button>)
+                      }
         </div>
-        
+
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="bg-gray-900 border-t-2 pb-4">
             <div className="flex flex-col space-y-2 px-4 pt-2">
-                  <Link 
-                    to="/" 
-                    className="py-2 px-3 rounded flex gap-2 items-center hover:bg-gray-700"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <MdDashboard/>
-                    Dashboard
-                  </Link>
+              <Link
+                to="/"
+                className="py-2 px-3 rounded flex gap-2 items-center hover:bg-gray-700"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <MdDashboard />
+                Dashboard
+              </Link>
               {user ? (
                 <>
-                  <Link 
-                    to="/task-list" 
+                  {/* <Link
+                    to="/task-"
                     className="py-2 px-3 flex gap-2  items-center rounded hover:bg-gray-700"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    <FaTasks/>
+                    <FaTasks />
                     Project Tasks
-                  </Link>
+                  </Link> */}
                   {user.role === "admin" && (
-                    <Link 
-                      to="/all-users" 
+                    <Link
+                      to="/all-users"
                       className="py-2 px-3 flex items-center gap-2 rounded hover:bg-gray-700"
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      <UsersIcon/>
+                      <UsersIcon />
                       All Members
                     </Link>
                   )}
                   <div className="pt-2 border-t border-gray-700">
                     <div className="flex items-center justify-between py-2 px-3">
-                      <button
-                        onClick={handleLogout}
-                        className="flex items-center gap-1 text-gray-300 hover:text-white"
-                      >
-                        <LogOut size={18} />
-                        Logout
-                      </button>
+                   
                     </div>
                   </div>
                 </>
               ) : (
                 <>
-                  <Link 
-                    to="/login" 
+                  <Link
+                    to="/login"
                     className="py-2 flex gap-2 items-center px-3 rounded hover:bg-gray-700"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                                      <MdOutlineLogin/>
+                    <MdOutlineLogin />
 
                     Login
                   </Link>
-             
+
                 </>
               )}
             </div>
