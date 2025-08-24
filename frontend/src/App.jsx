@@ -5,7 +5,7 @@ import Layout from './Component/Layout';
 import HomePage from './pages/HomePage';
 import AdminDashboard from './pages/AdminDashboard';
 import { useEffect, useState } from 'react';
-import axiosInstance from '../src/Config/apiconfig';
+import axiosInstance from './config/apiconfig';
 import { format } from 'date-fns';
 import {  setVenues } from './Store/slicer';
 function App() {

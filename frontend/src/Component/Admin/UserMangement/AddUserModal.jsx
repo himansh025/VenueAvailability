@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axiosInstance from "../../../Config/apiconfig";
+import axiosInstance from "../../../config/apiconfig";
 
 export default function AddUserModal({ addUserModal, onClose, onSuccess }) {
   const [formData, setFormData] = useState({

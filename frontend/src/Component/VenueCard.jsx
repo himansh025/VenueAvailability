@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { useNavigate } from "react-router-dom";
-import axiosInstance from '../Config/apiconfig';
+import axiosInstance from '../config/apiconfig';
 import UnavailableSlotsModal from './UnavailableSlotsModal';
 const VenueCard = ({ venue, onBookVenue, }) => {
   const { user } = useSelector((state) => state.auth)
