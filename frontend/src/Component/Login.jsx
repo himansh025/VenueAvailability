@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { LogIn, Mail, Lock } from "lucide-react";
 import { login } from "../Store/slicer";
-import axiosInstance from "../config/apiconfig";
+import axiosInstance from "../Config/apiconfig";
 import { useState } from "react";
 import { z } from "zod";
 

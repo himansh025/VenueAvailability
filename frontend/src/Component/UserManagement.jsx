@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Input from "../Component/Input";
 import Button from "../Component/Button";
 import AddUserModal from "./Admin/UserMangement/AddUserModal";
-import axiosInstance from "../config/apiconfig";
+import axiosInstance from "../Config/apiconfig";
 import UpdateUserModal from "./Admin/UserMangement/UpdateUserModal";
 export default function UserManagement() {
   const [users, setUsers] = useState([]);

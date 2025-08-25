@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserPlus, Lock, User } from 'lucide-react';
-import axiosInstance from '../config/apiconfig';
+import axiosInstance from '../Config/apiconfig';
 import { MdEmail, MdAdminPanelSettings } from 'react-icons/md';
 import { toast } from 'react-toastify';
 

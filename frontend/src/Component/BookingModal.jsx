@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import MyCalendar from './MyCalender';
 import { useDispatch, useSelector } from 'react-redux';
-import axiosInstance from '../config/apiconfig';
+import axiosInstance from '../Config/apiconfig'
 import { OK } from 'zod/v3';
 import { format } from 'date-fns';
 import { updateVenueBooking } from '../Store/slicer';

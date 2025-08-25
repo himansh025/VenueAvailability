@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../config/apiconfig';
+import axiosInstance from '../Config/apiconfig';
 import { useDispatch } from 'react-redux';
 import { logout  } from '../store/slices/authSlice'; // update path as per your structure
 

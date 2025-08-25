@@ -5,9 +5,9 @@ import Layout from './Component/Layout';
 import HomePage from './pages/HomePage';
 import AdminDashboard from './pages/AdminDashboard';
 import { useEffect, useState } from 'react';
-import axiosInstance from './config/apiconfig';
 import { format } from 'date-fns';
 import {  setVenues } from './Store/slicer';
+import axiosInstance from './Config/apiconfig';
 function App() {
   const { user } = useSelector(state => state.auth);
   const { venues } = useSelector(state => state.venue);
@@ -22,18 +22,21 @@ function App() {
     const fetchVenues = async () => {
       try {
         const res = await axiosInstance.get(`/venues?date=${formattedDate}`);
-        // console.log("res",res.data.data)
+        console.log("res",res?.data?.data)
         const updated = transformApiDataToSampleFormat(res?.data?.data)
-        // setVenues(updated);
+        setVenues(updated);
         dispatch(setVenues(updated))
       } catch (error) {
         console.error("Error fetching venues:", error);
+      }
+      finally{
+        setLoading(false)
       }
     };
 
     fetchVenues();
 
-    if(venues?.length>=0){
+    if(venues?.length>0){
       setLoading(false)
     }
      console.log(venues)
@@ -71,41 +74,7 @@ function App() {
     );
   };
 
-  if(loading){
-    return(
-     <div
-       style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
-        background: 'rgba(255, 255, 255, 0.8)',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 9999,
-      }}
-    >
-     <div style={{ textAlign: 'center' }}>
-        <div
-          style={{
-            border: '4px solid #f3f3f3',
-            borderTop: '4px solid #3498db',
-            borderRadius: '50%',
-            width: '50px',
-            height: '50px',
-            animation: 'spin 1s linear infinite',
-            margin: '0 auto 10px',
-          }}
-        >
 
-        </div>
-        <p>Loading...</p>
-      </div>
-    </div>
-    )
-  }
   return (
     <BrowserRouter>
       <div className="min-h-screen bg-gray-50">
@@ -115,7 +84,7 @@ function App() {
             {user && user.role==="superadmin" ?(
               <Route path="/" element={<AdminDashboard />} />
             ):(
-              <Route path="/" element={<HomePage />} />
+              <Route path="/" element={<HomePage loader={loading} />} />
             )
             }
             <Route path="/login" element={<Login />} />

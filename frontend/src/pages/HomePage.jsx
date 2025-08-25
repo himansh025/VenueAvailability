@@ -3,8 +3,9 @@ import SearchComponent from '../Component/SearchComponent';
 import VenuesList from '../Component/VenuesList';
 import BookingModal from '../Component/BookingModal';
 import { useSelector } from 'react-redux';
+import Loader from '../Component/Loader';
 
-const HomePage = () => {
+const HomePage = ({loader}) => {
   const [searchFilters, setSearchFilters] = useState({
     search: '',
     category: 'all',
@@ -33,7 +34,11 @@ const HomePage = () => {
   };
 
   
-
+if(loader){
+  return(
+    <Loader/>
+  )
+}
 
   return (
     <div className="min-h-screen bg-gray-50">
