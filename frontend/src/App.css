@@ -40,3 +40,16 @@
 .read-the-docs {
   color: #888;
 }
+
+
+.react-calendar__tile--now {
+  background: none !important;
+  color: inherit !important;
+}
+
+/* Optional: customize the selected date highlight */
+.react-calendar__tile--active {
+  background: #3b82f6 !important; /* Tailwind's blue-500 */
+  color: white !important;
+  border-radius: 9999px !important; /* fully rounded */
+}

@@ -1,8 +1,19 @@
- // Days and Time slots
-  const days = [
-    'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'
-  ];
 
+import { format } from "date-fns";
+
+    const days = {
+      0: "sunday",
+      1: "monday",
+      2: "tuesday",
+      3: "wednesday",
+      4: "thursday",
+      5: "friday",
+      6: "saturday",
+    };
+      const newDate=new Date
+      const dayName = days[newDate.getDay()]; // Get day name
+      const formattedDate = format(newDate, "yyyy-MM-dd"); // Format date
+  
   const timeSlots = [
     { index: '0', time: '9:00-10:00', label: '9:00 AM - 10:00 AM' },
     { index: '1', time: '10:00-11:00', label: '10:05 AM - 11:05 AM' },
@@ -13,4 +24,4 @@
     { index: '6', time: '15:00-16:00', label: '3:40 PM - 4:40 PM' }
   ];
 
-  export {timeSlots,days}
+  export {timeSlots,days,dayName,formattedDate}

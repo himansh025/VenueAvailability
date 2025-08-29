@@ -1,37 +1,48 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import SearchComponent from '../Component/SearchComponent';
 import VenuesList from '../Component/VenuesList';
 import BookingModal from '../Component/BookingModal';
 import { useSelector } from 'react-redux';
 import Loader from '../Component/Loader';
-
-import { days, timeSlots } from '../utils/dayTimeSlot';
+import { days, timeSlots,dayName } from '../utils/dayTimeSlot';
 import { useVacantVenues } from '../utils/useVacantVenues'
+import { format } from 'date-fns';
 const HomePage = ({ loader }) => {
-  const [searchFilters, setSearchFilters] = useState({
-    search: '',
-    category: 'all',
-    availability: 'all',
-    selectedDay: 'monday',
-    selectedTimeIndex: '1'
-  });
-  const { vacantVenues, allDayVenues, loading } = useVacantVenues(
-    searchFilters.selectedDay,
-    searchFilters.selectedTimeIndex,
-    timeSlots
-  );
+const [searchFilters, setSearchFilters] = useState({
+  search: '',
+  category: 'all',
+  availability: 'all',
+  selectedDate: new Date(), 
+  selectedDay: dayName,    
+  selectedTimeIndex: '1'
+});
+console.log(searchFilters)
+ const { vacantVenues, allDayVenues, loading } = useVacantVenues(
+  searchFilters.selectedDay,    
+  searchFilters.selectedTimeIndex,
+  timeSlots
+);
+
   const [selectedVenue, setSelectedVenue] = useState(null);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
+  
+const handleSearchChange = (filters) => {
 
+  let updatedFilters = { ...searchFilters, ...filters };
 
-  // Handle search & filter changes
-  const handleSearchChange = (filters) => {
-    setSearchFilters(prev => ({
-      ...prev,
-      ...filters
-    }));
-  };
+    if (filters.selectedDate) {
+       const newDate= new Date(filters.selectedDate)
+      console.log("selcted",newDate)
+      const newDayName = days[newDate.getDay()];
+      updatedFilters.selectedDay = newDayName;
+      const newformattedDate= format(filters.selectedDate, "yyyy-MM-dd");
+      updatedFilters.selectedDate = newformattedDate;
+    }
+
+    console.log('Updated filters:', updatedFilters);
+    setSearchFilters(updatedFilters);
+  };  
 
   const handleBookVenue = (venue) => {
     setSelectedVenue(venue);
@@ -64,8 +75,8 @@ const HomePage = ({ loader }) => {
           <div className="flex justify-between items-center">
             <p className="text-sm text-blue-800">
               <span className="font-medium">Selected:</span>{" "}
-              {searchFilters.selectedDay.charAt(0).toUpperCase() + searchFilters.selectedDay.slice(1)} -{" "}
-              {timeSlots.find(slot => slot.index === searchFilters.selectedTimeIndex)?.label}
+              {searchFilters?.selectedDay?.charAt(0).toUpperCase() + searchFilters?.selectedDay?.slice(1)} -{" "}
+              {timeSlots?.find(slot => slot.index === searchFilters?.selectedTimeIndex)?.label}
             </p>
             <div className="text-xs text-blue-600">
               <span className="font-medium">Available:</span> {vacantVenues.length} venues
@@ -85,6 +96,7 @@ const HomePage = ({ loader }) => {
       {isBookingModalOpen && selectedVenue && (
         <BookingModal
           venue={selectedVenue}
+          date={searchFilters.selectedDate}
           isOpen={isBookingModalOpen}
           onClose={handleCloseBooking}
           selectedDay={searchFilters.selectedDay}

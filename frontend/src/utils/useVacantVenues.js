@@ -78,11 +78,13 @@ export const useVacantVenues = (selectedDay, selectedTimeIndex, timeSlots) => {
   const fetchVacantVenues = async () => {
     setLoading(true);
     try {
+      console.log("fdegvd",selectedDay)
       const res = await axiosInstance.post(`/vacent`, {
         reqday: selectedDay,
         lectureindex: selectedTimeIndex,
       });
 
+      console.log("eqchvfedc",res.data)
       setAllDayVenues(res?.data || {});
       filterVenuesByTime(res?.data, selectedTimeIndex);
     } catch (error) {

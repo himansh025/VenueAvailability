@@ -1,42 +1,45 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import axiosInstance from '../Config/apiconfig'
-import { format } from 'date-fns';
 
-
-const BookingModal = ({ venue, isOpen, onClose }) => {
-  const [selectedTime, setSelectedTime] = useState('');
+const BookingModal = ({ venue, date, isOpen, onClose }) => {
+  // console.log(date)
   const [purpose, setPurpose] = useState('');
-  const {user}= useSelector((state)=>state.auth)
-  const dispatch = useDispatch()
+  const [filteredVenue, setFilteredVenue] = useState(venue); // State for filtered venue
+  // const [loading, setLoading] = useState(false);
+  const { user } = useSelector((state) => state.auth)
 
+  useEffect(() => {
+    setFilteredVenue(venue);
+  }, [venue]);
 
-  const handleBooking =async () => {
-    if (!selectedDate || !selectedTime || !purpose ) {
-      alert('Please fill in all fields');
+  const handleBooking = async () => {
+    if (!venue && !venue.availableTimes || !venue.selectedDay || !venue.name) {
+      alert('venue details should not be empty');
       return;
-    } 
-    if( !user || !venue){
-    alert('user or venue not get')
-      return; 
-    } 
-          const data= {
-  venueId: venue.id,
-  bookedBy:user.id,
-  date:selectedDate,
-  timeSlot:selectedTime,    
-  purpose:purpose
-}
-// console.log(data)
-        const username=user.name
+    }
+    if (!purpose) {
+      alert('purpose should not pe empty')
+      return;
+    }
+    const data = {
+      venue:venue.name,
+      bookedBy: user.name,
+      date: date,
+      day: venue.selectedDay,
+      timeSlot: venue.availableTimes,
+      purpose: purpose
+    }
+    // console.log(data)
+
     try {
-      const res = await axiosInstance.post(`/bookings`,data);
+      const res = await axiosInstance.post(`/bookings`, data);
       // console.log(res.data)
-      if(res.data){
+      if (res.data) {
         alert("successfully booked the venue")
         onClose();
       }
-    
+
     } catch (error) {
       console.error("Error fetching venues:", error);
     }
@@ -46,7 +49,7 @@ const BookingModal = ({ venue, isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-lg shadow-xl max-w-lg w-full max-h-[85vh] overflow-y-auto">
         {/* Header */}
         <div className="border-b p-2">
           <div className="flex justify-between items-center">
@@ -66,41 +69,18 @@ const BookingModal = ({ venue, isOpen, onClose }) => {
           <div className="bg-gray-50 rounded-lg p-4">
             <h3 className="font-semibold  text-gray-900 mb-2">Venue Details</h3>
             <div className="text-sm text-gray-600 space-y-1">
-              <p><strong>Category:</strong> {venue.category}</p>
-              <p><strong>Location:</strong> {venue.location} </p>
-              <p><strong>Capacity:</strong> {venue.capacity} people</p>
+              <p><strong>Category:</strong> {filteredVenue?.category}</p>
+              <p><strong>Capacity:</strong> {filteredVenue?.capacity} people</p>
             </div>
           </div>
-
-          {/* Calendar */}
           <div>
-            <h3 className="font-semibold text-gray-900 ">Select Date</h3>
-           
-            <div className="grid grid-cols-7 gap-2">
-
+            <h3 className="font-semibold text-gray-900 mb-2">Available Times</h3>
+            <div className="col-span-full text-center py-2">
+              <p className="text-green-500">
+                {venue?.availableTimes[0]}
+              </p>
             </div>
           </div>
-
-          {/* Time Selection */}
-          <div>
-            <h3 className="font-semibold text-gray-900 mb-3">Available Times</h3>
-            <div className="grid grid-cols-4 lg:grid-cols-5 gap-2">
-              {venue.availableTimes.map((time, index) => (
-                <button
-                  key={index}
-                  onClick={() => setSelectedTime(time)}
-                  className={`p-3 text-sm font-medium rounded-md border transition-colors ${selectedTime === time
-                      ? 'bg-green-600 text-white border-success'
-                      : 'bg-green-50 hover:bg-green-100 border-green-200 text-green-600'
-                    }`}
-                >
-                  {time}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Purpose */}
           <div>
             <label htmlFor="purpose" className="block font-semibold text-gray-900 mb-2">
               Purpose of Booking
@@ -114,23 +94,11 @@ const BookingModal = ({ venue, isOpen, onClose }) => {
               rows={3}
             />
           </div>
-
-          {/* Booking Summary */}
-          {selectedDate && selectedTime && (
-            <div className="bg-blue-50 rounded-lg p-4">
-              <h3 className="font-semibold text-blue-900 mb-2">Booking Summary</h3>
-              <div className="text-sm text-blue-800 space-y-1">
-                <p><strong>Venue:</strong> {venue.name}</p>
-                <p><strong>Date:</strong> {new Date(selectedDate).toLocaleDateString()}</p>
-                <p><strong>Time:</strong> {selectedTime}</p>
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Footer */}
-        <div className="border-t p-6 flex gap-3">
-      
+        <div className="border-t p-3 flex gap-2">
+
           <button
             onClick={handleBooking}
             className="flex-1 px-4 py-2 bg-blue-400 hover:bg-blue-600 text-white rounded-md transition-colors"
