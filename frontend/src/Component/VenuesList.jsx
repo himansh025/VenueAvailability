@@ -1,9 +1,49 @@
 import VenueCard from './VenueCard';
+import { useEffect, useState } from 'react';
+import axiosInstance from '../Config/apiconfig';
+import { timeSlots } from '../utils/dayTimeSlot'
+const VenuesList = ({ filters, onBookVenue, venues, date, selectedDay, selectedTime }) => {
 
-const VenuesList = ({ filters, onBookVenue, venues }) => {
-  // Use passed venues prop instead of redux state
+  const [bookings, setBookings] = useState([]);
+  const venuesWithBooking = venues.map(venue => {
+  const frontendDate = new Date(date).toISOString().split("T")[0];
+
+    const booking = bookings.find(b => {
+      const backendDate = new Date(b.date).toISOString().split("T")[0];
+      // console.log(frontendDate,backendDate)
+      // console.log(selectedTime)
+      // console.log(timeSlots)
+      // console.log("timeslot",b.timeSlot,timeSlots[selectedTime].label )
+      return (
+        b.venue === venue.name &&
+        b.timeSlot === timeSlots[selectedTime].label &&
+        b.day.toLowerCase() === selectedDay.toLowerCase() &&
+        backendDate === frontendDate
+      );
+    });
+    return {
+      ...venue,
+      isBooked: !!booking,
+      booking
+    };
+  });
+  // console.log("venueswithbookings", venuesWithBooking)
+  useEffect(() => {
+    const bookedVenues = async () => {
+      console.log("1")
+      try {
+        const res = await axiosInstance.get("/bookings");
+        console.log("ref", res.data)
+        setBookings(res.data)
+      }
+      catch (error) {
+        console.error(error);
+      } 
+    }
+    bookedVenues()
+  }, []);
   // console.log("",venues)
-  const filteredVenues = venues.filter((venue) => {
+  const filteredVenues = venuesWithBooking.filter((venue) => {
     const matchesSearch =
       filters.search === "" ||
       venue.name.toLowerCase().includes(filters.search.toLowerCase());

@@ -7,7 +7,7 @@ import Loader from '../Component/Loader';
 import { days, timeSlots,dayName } from '../utils/dayTimeSlot';
 import { useVacantVenues } from '../utils/useVacantVenues'
 import { format } from 'date-fns';
-const HomePage = ({ loader }) => {
+const HomePage = () => {
 const [searchFilters, setSearchFilters] = useState({
   search: '',
   category: 'all',
@@ -16,7 +16,7 @@ const [searchFilters, setSearchFilters] = useState({
   selectedDay: dayName,    
   selectedTimeIndex: '1'
 });
-console.log(searchFilters)
+// console.log(searchFilters)
  const { vacantVenues, allDayVenues, loading } = useVacantVenues(
   searchFilters.selectedDay,    
   searchFilters.selectedTimeIndex,
@@ -33,14 +33,14 @@ const handleSearchChange = (filters) => {
 
     if (filters.selectedDate) {
        const newDate= new Date(filters.selectedDate)
-      console.log("selcted",newDate)
+      // console.log("selcted",newDate)
       const newDayName = days[newDate.getDay()];
       updatedFilters.selectedDay = newDayName;
       const newformattedDate= format(filters.selectedDate, "yyyy-MM-dd");
       updatedFilters.selectedDate = newformattedDate;
     }
 
-    console.log('Updated filters:', updatedFilters);
+    // console.log('Updated filters:', updatedFilters);
     setSearchFilters(updatedFilters);
   };  
 
@@ -54,7 +54,7 @@ const handleSearchChange = (filters) => {
     setSelectedVenue(null);
   };
 
-  if (loader || loading) {
+  if ( loading) {
     return <Loader />;
   }
 
@@ -89,6 +89,9 @@ const handleSearchChange = (filters) => {
           filters={searchFilters}
           onBookVenue={handleBookVenue}
           venues={vacantVenues}
+          date={searchFilters.selectedDate}
+          selectedDay={searchFilters.selectedDay}
+          selectedTime={searchFilters.selectedTimeIndex}
         />
       </main>
 

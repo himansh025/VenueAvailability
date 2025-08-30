@@ -23,7 +23,7 @@ export default function UserManagement() {
   };
 
 
-  console.log(users)
+  // console.log(users)
   const filteredUsers = users.filter((u) => {
     if (search != null) {
       return u?.name?.toLowerCase().includes(search.toLowerCase())
@@ -60,10 +60,10 @@ export default function UserManagement() {
     )
   }
   const upateUserhandle = async (id) => {
-    console.log(id)
+    // console.log(id)
     setSelectedUserId(id);  
     setUpdateUserModal(true)
-      console.log(updateUserModal)
+      // console.log(updateUserModal)
 
     
   }
