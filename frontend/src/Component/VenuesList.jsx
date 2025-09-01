@@ -2,7 +2,7 @@ import VenueCard from './VenueCard';
 import { useEffect, useState } from 'react';
 import axiosInstance from '../Config/apiconfig';
 import { timeSlots } from '../utils/dayTimeSlot'
-const VenuesList = ({ filters, onBookVenue, venues, date, selectedDay, selectedTime }) => {
+const VenuesList = ({ filters, onBookVenue, venues, date, selectedDay, selectedTime,refreshVenues }) => {
 
   const [bookings, setBookings] = useState([]);
   const venuesWithBooking = venues.map(venue => {
@@ -30,10 +30,10 @@ const VenuesList = ({ filters, onBookVenue, venues, date, selectedDay, selectedT
   // console.log("venueswithbookings", venuesWithBooking)
   useEffect(() => {
     const bookedVenues = async () => {
-      console.log("1")
+      // console.log("1")
       try {
         const res = await axiosInstance.get("/bookings");
-        console.log("ref", res.data)
+        // console.log("ref", res.data)
         setBookings(res.data)
       }
       catch (error) {
@@ -83,7 +83,9 @@ const VenuesList = ({ filters, onBookVenue, venues, date, selectedDay, selectedT
             <VenueCard
               key={venue.id}
               venue={venue}
+              date={new Date(date).toISOString().split("T")[0]}
               onBookVenue={onBookVenue}
+              refreshVenues={refreshVenues}
             />
           ))}
         </div>

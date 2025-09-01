@@ -1,17 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import axiosInstance from '../Config/apiconfig'
+import Loader from './Loader';
 
-const BookingModal = ({ venue, date, isOpen, onClose }) => {
+const BookingModal = ({ venue, date, isOpen, onClose,refreshVenues }) => {
   // console.log(date)
   const [purpose, setPurpose] = useState('');
   const [filteredVenue, setFilteredVenue] = useState(venue); // State for filtered venue
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { user } = useSelector((state) => state.auth)
 
   useEffect(() => {
     setFilteredVenue(venue);
   }, [venue]);
+
 
   const handleBooking = async () => {
     if (!venue && !venue.availableTimes || !venue.selectedDay || !venue.name) {
@@ -33,20 +35,30 @@ const BookingModal = ({ venue, date, isOpen, onClose }) => {
     // console.log(data)
 
     try {
+      setLoading(true)
       const res = await axiosInstance.post(`/bookings`, data);
       // console.log(res.data)
       if (res.data) {
         alert("successfully booked the venue")
         onClose();
       }
-
+      refreshVenues()
     } catch (error) {
       console.error("Error fetching venues:", error);
+    }
+    finally{
+      setLoading(false)
+
     }
   };
 
   if (!isOpen) return null;
 
+  if(loading){
+    return (
+      <Loader/>
+    )
+  }
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg shadow-xl max-w-lg w-full max-h-[85vh] overflow-y-auto">

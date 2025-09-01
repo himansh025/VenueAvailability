@@ -9,7 +9,7 @@ export default function MyCalendar({ onDateChange }) {
   const [date, setDate] = useState(now);
   // console.log(date)
   const handleChange = (newDate) => {
-    console.log("new",newDate)
+    // console.log("new",newDate)
     setDate(newDate); // keep as Date object
 
     const dayName = days[newDate.getDay()];

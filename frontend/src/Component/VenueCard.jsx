@@ -1,11 +1,15 @@
 import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import axiosInstance from '../Config/apiconfig';
+import { useState } from 'react';
+import Loader from './Loader';
 
-const VenueCard = ({ venue, onBookVenue }) => {
+
+const VenueCard = ({ venue, onBookVenue,date,refreshVenues }) => {
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
-
+  const [loading,setLoading]=useState(false)
+console.log(venue)
   const getCategoryColor = (category) => {
     const colors = {
       lab: 'bg-blue-100 text-blue-800',
@@ -36,19 +40,33 @@ const VenueCard = ({ venue, onBookVenue }) => {
     };
   };
 
-  const handleCancelBooking = async (id) => {
+  const handleCancelBooking = async (venueName) => {
+    // console.log(id)
+    // console.log(venue)
     try {
-      const res = await axiosInstance.delete(`/bookings/${id}`, {
+      setLoding(true)
+      const res = await axiosInstance.delete(`/bookings`, {
         data: {
-          date: venue.selectedDay,
-          timeSlot: venue.timeSlot,
-          venueId: venue.id
+          day: venue.selectedDay,
+          date:date,
+          timeSlot: venue.availableTimes,
+          venue: venueName
         }
       });
+      console.log(res.data.message)
+      refreshVenues()
     } catch (error) {
       console.error("Error canceling booking:", error);
+    }finally{
+      setLoding(false)
     }
   };
+
+  if(loading){
+    return(
+      <Loader/>
+    )
+  }
 
   const status = getAvailabilityStatus();
 
@@ -73,15 +91,16 @@ const VenueCard = ({ venue, onBookVenue }) => {
       {/* Content */}
       <div className="p-4">
         <div className="flex justify-between items-start mb-3">
-          <h2 className="text-lg font-semibold text-gray-900">{venue.name}</h2>
-          {!bookingDetails && (
+          <h2 className="text-md font-semibold text-gray-900">{venue.name}</h2>
+       
+          {venue && (
             <span className={`px-2 py-1 rounded-full text-xs font-small ${getCategoryColor(venue.category)}`}>
               {venue.category.toUpperCase()}
             </span>
           )}
         </div>
 
-        <div className="text-sm flex justify-between text-gray-600 mb-4">
+        <div className="text-sm flex justify-between text-gray-600 mb-2">
           <p>Capacity: {venue.capacity} people</p>
           {venue.selectedDay && (
             <p>Day: <span className="capitalize font-medium">{venue.selectedDay}</span></p>
@@ -89,19 +108,19 @@ const VenueCard = ({ venue, onBookVenue }) => {
         </div>
 
         {/* Timeslot / Booking Info */}
-        <div className="mb-2 flex justify-between h-6">
+        <div className="mb-2 flex justify-between h-5 lg:h-6">
           {!bookingDetails ? (
             <>
               <h4 className="text-sm font-medium text-gray-900 mb-2">Available Time</h4>
               {venue?.availableTimes && (
-                <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-md">
+                <span className="px-2 py-1  bg-green-100 text-green-800 text-xs rounded-md">
                   {venue.availableTimes}
                 </span>
               )}
             </>
           ) : (
             <>
-              <h4 className="text-sm font-medium text-gray-900 mb-2">Unavailable Time</h4>
+              <h4 className="text-sm font-medium text-gray-900 ">Unavailable Time</h4>
               <span className="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-md">
                 {bookedTime}
               </span>
@@ -109,15 +128,10 @@ const VenueCard = ({ venue, onBookVenue }) => {
           )}
         </div>
 
-        {/* Show who booked */}
-        {bookedBy && (
-          <p className="text-sm text-gray-700 mb-2">
-            Booked By: <span className="font-medium">{bookedBy?.username}</span>
-          </p>
-        )}
+   
 
         {/* Action button */}
-        <div className='flex w-full relative gap-1'>
+        <div className='flex flex-col text-sm md:flex-row w-full relative gap-1'>
           {user ? (
             !bookingDetails ? (
               <button
@@ -128,8 +142,8 @@ const VenueCard = ({ venue, onBookVenue }) => {
               </button>
             ) : (
               <button
-                onClick={() => handleCancelBooking(bookingDetails.id)}
-                className="w-full bg-red-500 hover:bg-red-600 text-white font-small py-2 px-4 rounded-md transition-colors"
+                onClick={() => handleCancelBooking(venue?.booking?.venue)}
+                className=" w-full md:w-max h-12 bg-red-500 hover:bg-red-600 text-white   px-4 rounded-md transition-colors"
               >
                 Cancel Booking
               </button>
@@ -142,6 +156,13 @@ const VenueCard = ({ venue, onBookVenue }) => {
               Login required to book
             </button>
           )}
+               {/* Show who booked */}
+        {bookedBy && (
+          <p className="flex flex-col w-full h-12 justify-center items-center bg-green-600 rounded-md px-4 text-center  text-gray-700 mb-2  transition-colors">
+            <span>Booked By: </span>
+            <span className="">{(bookedBy?.username).toUpperCase()}</span>
+          </p>
+        )}
         </div>
       </div>
     </div>

@@ -17,7 +17,7 @@ const [searchFilters, setSearchFilters] = useState({
   selectedTimeIndex: '1'
 });
 // console.log(searchFilters)
- const { vacantVenues, allDayVenues, loading } = useVacantVenues(
+ const { vacantVenues, allDayVenues, loading,fetchVacantVenues } = useVacantVenues(
   searchFilters.selectedDay,    
   searchFilters.selectedTimeIndex,
   timeSlots
@@ -92,6 +92,7 @@ const handleSearchChange = (filters) => {
           date={searchFilters.selectedDate}
           selectedDay={searchFilters.selectedDay}
           selectedTime={searchFilters.selectedTimeIndex}
+          refreshVenues={fetchVacantVenues}
         />
       </main>
 
@@ -104,6 +105,7 @@ const handleSearchChange = (filters) => {
           onClose={handleCloseBooking}
           selectedDay={searchFilters.selectedDay}
           selectedTime={searchFilters.selectedTimeIndex}
+          refreshVenues={fetchVacantVenues}
         />
       )}
     </div>
