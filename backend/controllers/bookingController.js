@@ -1,3 +1,4 @@
+const { timeSlots } = require("../../frontend/src/utils/dayTimeSlot");
 const Booking = require("../models/bookModel");
 
 // Create booking
@@ -64,25 +65,43 @@ exports.getBookings = async (req, res) => {
 // Cancel booking
 exports.cancelBooking = async (req, res) => {
   try {
-    const booking = await Booking.findById(req.params.bookingId);
+    const { day, timeSlot, date, venue } = req.body;
+    // console.log(day, date, timeSlot, venue);
+
+    if (!day || !date || !timeSlot || !venue) {
+      return res.status(400).json({ message: "day, date, time and venue are required" });
+    }
+
+    const fdate = new Date(date);
+    // console.log(fdate);
+
+    const booking = await Booking.findOne({
+      venue,
+      timeSlot,
+      day,
+      date: fdate
+    });
 
     if (!booking) {
-      return res.status(404).json({ message: "Booking not found" });
+      return res.status(404).json({ message: "Booking not found with the matching details" });
     }
+
+    // console.log(booking?.bookedBy.userId);
+    // console.log(req?.user?._id);
 
     // Only user who booked OR admin can cancel
     if (
-      req.user &&
+      req.user.role !== "admin" && // allow admin always
       booking.bookedBy.userId.toString() !== req.user._id.toString()
     ) {
       return res.status(403).json({ message: "Not authorized to cancel" });
     }
 
-    booking.status = "Cancelled";
-    await booking.save();
+    await booking.deleteOne();
+    return res.json({ message: "Booking cancelled successfully" });
 
-    res.json({ message: "Booking cancelled", booking });
   } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
+    console.error(err);
+    return res.status(500).json({ message: "Server error", error: err.message });
   }
 };
