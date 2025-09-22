@@ -4,7 +4,6 @@ import VenuesList from '../Component/VenuesList';
 import BookingModal from '../Component/BookingModal';
 import { useSelector } from 'react-redux';
 import Loader from '../Component/Loader';
-<<<<<<< HEAD
 import { days, timeSlots, dayName } from '../utils/dayTimeSlot';
 import { useVacantVenues } from '../utils/useVacantVenues';
 import { format } from 'date-fns';
@@ -24,31 +23,10 @@ const HomePage = () => {
     searchFilters.selectedTimeIndex,
     timeSlots
   );
-=======
-import { days, timeSlots,dayName } from '../utils/dayTimeSlot';
-import { useVacantVenues } from '../utils/useVacantVenues'
-import { format } from 'date-fns';
-const HomePage = () => {
-const [searchFilters, setSearchFilters] = useState({
-  search: '',
-  category: 'all',
-  availability: 'all',
-  selectedDate: new Date(), 
-  selectedDay: dayName,    
-  selectedTimeIndex: '1'
-});
-// console.log(searchFilters)
- const { vacantVenues, allDayVenues, loading,fetchVacantVenues } = useVacantVenues(
-  searchFilters.selectedDay,    
-  searchFilters.selectedTimeIndex,
-  timeSlots
-);
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
 
   const [selectedVenue, setSelectedVenue] = useState(null);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
-<<<<<<< HEAD
 
   const handleSearchChange = (filters) => {
     let updatedFilters = { ...searchFilters, ...filters };
@@ -63,25 +41,6 @@ const [searchFilters, setSearchFilters] = useState({
 
     setSearchFilters(updatedFilters);
   };
-=======
-  
-const handleSearchChange = (filters) => {
-
-  let updatedFilters = { ...searchFilters, ...filters };
-
-    if (filters.selectedDate) {
-       const newDate= new Date(filters.selectedDate)
-      // console.log("selcted",newDate)
-      const newDayName = days[newDate.getDay()];
-      updatedFilters.selectedDay = newDayName;
-      const newformattedDate= format(filters.selectedDate, "yyyy-MM-dd");
-      updatedFilters.selectedDate = newformattedDate;
-    }
-
-    // console.log('Updated filters:', updatedFilters);
-    setSearchFilters(updatedFilters);
-  };  
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
 
   const handleBookVenue = (venue) => {
     setSelectedVenue(venue);
@@ -93,16 +52,11 @@ const handleSearchChange = (filters) => {
     setSelectedVenue(null);
   };
 
-<<<<<<< HEAD
   if (loading) {
-=======
-  if ( loading) {
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
     return <Loader />;
   }
 
   return (
-<<<<<<< HEAD
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
       {/* Enhanced Header */}
       <div className="bg-white shadow-sm border-b border-gray-200">
@@ -186,34 +140,10 @@ const handleSearchChange = (filters) => {
                   width: `${Math.min((vacantVenues.length / Math.max(vacantVenues.length + 10, 20)) * 100, 100)}%` 
                 }}
               ></div>
-=======
-    <div className="min-h-screen bg-gray-50">
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-1 py-8">
-        {/* Search Section (Day, Time, Filters) */}
-
-        <SearchComponent
-          onSearchChange={handleSearchChange}
-          filters={searchFilters}
-          days={days}
-          timeSlots={timeSlots}
-        />
-
-        {/* Info box */}
-        <div className="mt-2 p-3 bg-blue-50 rounded-md">
-          <div className="flex justify-between items-center">
-            <p className="text-sm text-blue-800">
-              <span className="font-medium">Selected:</span>{" "}
-              {searchFilters?.selectedDay?.charAt(0).toUpperCase() + searchFilters?.selectedDay?.slice(1)} -{" "}
-              {timeSlots?.find(slot => slot.index === searchFilters?.selectedTimeIndex)?.label}
-            </p>
-            <div className="text-xs text-blue-600">
-              <span className="font-medium">Available:</span> {vacantVenues.length} venues
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
             </div>
           </div>
         </div>
 
-<<<<<<< HEAD
         {/* Enhanced Venue List Container */}
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
           <div className="border-b border-gray-100 px-6 py-4">
@@ -275,21 +205,6 @@ const handleSearchChange = (filters) => {
       </main>
 
       {/* Enhanced Booking Modal */}
-=======
-        {/* Venue List */}
-        <VenuesList
-          filters={searchFilters}
-          onBookVenue={handleBookVenue}
-          venues={vacantVenues}
-          date={searchFilters.selectedDate}
-          selectedDay={searchFilters.selectedDay}
-          selectedTime={searchFilters.selectedTimeIndex}
-          refreshVenues={fetchVacantVenues}
-        />
-      </main>
-
-      {/* Booking Modal */}
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
       {isBookingModalOpen && selectedVenue && (
         <BookingModal
           venue={selectedVenue}
@@ -305,8 +220,4 @@ const handleSearchChange = (filters) => {
   );
 };
 
-<<<<<<< HEAD
 export default HomePage;
-=======
-export default HomePage;
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc

@@ -1,15 +1,9 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch } from "react-redux";
-<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { LogIn, Mail, Lock, X } from "lucide-react";
-=======
-import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { LogIn, Mail, Lock } from "lucide-react";
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
 import { login } from "../Store/slicer";
 import axiosInstance from "../Config/apiconfig";
 import { useState } from "react";
@@ -40,11 +34,7 @@ function Login() {
       const user = response.data.user;
       if (user) {
         dispatch(login({ user }));
-<<<<<<< HEAD
         sessionStorage.setItem("token", response?.data?.token);
-=======
-        sessionStorage.setItem('token', response?.data?.token);
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
         toast.success("Login successful!");
         navigate("/");
       }
@@ -56,11 +46,7 @@ function Login() {
   };
 
   return (
-<<<<<<< HEAD
     <div className="max-w-md mx-auto bg-white mt-20 rounded-lg shadow-md p-8">
-=======
-    <div className="max-w-md mx-auto bg-white mt-20 rounded-lg shadow-md p-8 ">
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
       <div className="text-center mb-8">
         <div className="bg-indigo-100 rounded-full p-3 w-12 h-12 mx-auto mb-4 flex items-center justify-center">
           <LogIn className="text-indigo-600" size={24} />
@@ -71,13 +57,9 @@ function Login() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <div>
-<<<<<<< HEAD
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Email Address
           </label>
-=======
-          <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <Mail className="h-5 w-5 text-gray-400" />
@@ -85,33 +67,21 @@ function Login() {
             <input
               type="email"
               {...register("email")}
-<<<<<<< HEAD
               className="pl-10 input-field w-full border rounded-md py-2 px-3"
-=======
-              className="pl-10 input-field"
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
               placeholder="email@example.com"
             />
           </div>
           {errors.email && (
-<<<<<<< HEAD
             <p className="mt-1 text-sm text-red-600">
               {errors.email.message}
             </p>
-=======
-            <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
           )}
         </div>
 
         <div>
-<<<<<<< HEAD
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Password
           </label>
-=======
-          <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <Lock className="h-5 w-5 text-gray-400" />
@@ -119,22 +89,14 @@ function Login() {
             <input
               type="password"
               {...register("password")}
-<<<<<<< HEAD
               className="pl-10 input-field w-full border rounded-md py-2 px-3"
-=======
-              className="pl-10 input-field"
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
               placeholder="••••••••"
             />
           </div>
           {errors.password && (
-<<<<<<< HEAD
             <p className="mt-1 text-sm text-red-600">
               {errors.password.message}
             </p>
-=======
-            <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
           )}
         </div>
 
@@ -153,16 +115,10 @@ function Login() {
           )}
         </button>
       </form>
-<<<<<<< HEAD
-=======
-
- 
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
     </div>
   );
 }
 
-<<<<<<< HEAD
 function LoginModal({ isOpen, onClose }) {
   if (!isOpen) return null;
   return (
@@ -182,6 +138,3 @@ function LoginModal({ isOpen, onClose }) {
 
 export default Login;
 export { LoginModal };
-=======
-export default Login;
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc

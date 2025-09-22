@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
-<<<<<<< HEAD
  
 import axiosInstance from "../../../Config/apiconfig";
  
-=======
-import axiosInstance from "../../../Config/apiconfig";
-
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
 export default function UpdateUserModal({userId, updateUserModal, onClose, onSuccess }) {
   const [formData, setFormData] = useState({
     name: "",

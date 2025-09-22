@@ -1,7 +1,6 @@
 import VenueCard from './VenueCard';
 import { useEffect, useState } from 'react';
 import axiosInstance from '../Config/apiconfig';
-<<<<<<< HEAD
 import { timeSlots } from '../utils/dayTimeSlot';
 
 const VenuesList = ({ filters, onBookVenue, venues, date, selectedDay, selectedTime, refreshVenues }) => {
@@ -18,29 +17,10 @@ const VenuesList = ({ filters, onBookVenue, venues, date, selectedDay, selectedT
       return (
         b.venue === venue.name &&
         b.timeSlot === timeSlots[selectedTime]?.label &&
-=======
-import { timeSlots } from '../utils/dayTimeSlot'
-const VenuesList = ({ filters, onBookVenue, venues, date, selectedDay, selectedTime,refreshVenues }) => {
-
-  const [bookings, setBookings] = useState([]);
-  const venuesWithBooking = venues.map(venue => {
-  const frontendDate = new Date(date).toISOString().split("T")[0];
-
-    const booking = bookings.find(b => {
-      const backendDate = new Date(b.date).toISOString().split("T")[0];
-      // console.log(frontendDate,backendDate)
-      // console.log(selectedTime)
-      // console.log(timeSlots)
-      // console.log("timeslot",b.timeSlot,timeSlots[selectedTime].label )
-      return (
-        b.venue === venue.name &&
-        b.timeSlot === timeSlots[selectedTime].label &&
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
         b.day.toLowerCase() === selectedDay.toLowerCase() &&
         backendDate === frontendDate
       );
     });
-<<<<<<< HEAD
 
     return {
       ...venue,
@@ -82,47 +62,10 @@ const VenuesList = ({ filters, onBookVenue, venues, date, selectedDay, selectedT
       filters.availability === "all" ||
       (filters.availability === "available" && !venue.isBooked) ||
       (filters.availability === "unavailable" && venue.isBooked);
-=======
-    return {
-      ...venue,
-      isBooked: !!booking,
-      booking
-    };
-  });
-  // console.log("venueswithbookings", venuesWithBooking)
-  useEffect(() => {
-    const bookedVenues = async () => {
-      // console.log("1")
-      try {
-        const res = await axiosInstance.get("/bookings");
-        // console.log("ref", res.data)
-        setBookings(res.data)
-      }
-      catch (error) {
-        console.error(error);
-      } 
-    }
-    bookedVenues()
-  }, []);
-  // console.log("",venues)
-  const filteredVenues = venuesWithBooking.filter((venue) => {
-    const matchesSearch =
-      filters.search === "" ||
-      venue.name.toLowerCase().includes(filters.search.toLowerCase());
-
-    const matchesCategory =
-      filters.category === "all" || venue.category === filters.category;
-
-    const matchesAvailability =
-      filters.availability === "all" ||
-      (filters.availability === "available" && venue.availableTimes.length > 0) ||
-      (filters.availability === "unavailable" && venue.availableTimes.length === 0);
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
 
     return matchesSearch && matchesCategory && matchesAvailability;
   });
 
-<<<<<<< HEAD
   if (loading) {
     return (
       <div className="space-y-6">
@@ -175,22 +118,10 @@ const VenuesList = ({ filters, onBookVenue, venues, date, selectedDay, selectedT
               </svg>
               Refresh
             </button>
-=======
-  return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-900">
-          Vacant Venues
-        </h2>
-        {filteredVenues.length > 0 && (
-          <div className="text-sm text-gray-600">
-            Showing venues for selected day and time
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
           </div>
         )}
       </div>
 
-<<<<<<< HEAD
       {/* Venues Grid or Empty State */}
       {filteredVenues.length === 0 ? (
         <div className="text-center py-16 bg-gray-50 rounded-2xl">
@@ -214,20 +145,6 @@ const VenuesList = ({ filters, onBookVenue, venues, date, selectedDay, selectedT
               key={venue.id || venue.name}
               venue={venue}
               date={date}
-=======
-      {filteredVenues.length === 0 ? (
-        <div className="text-center py-12">
-          <div className="text-gray-500 text-lg">No vacant venues found for selected day and time.</div>
-          <p className="text-gray-400 mt-2">Try selecting a different day or time slot.</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {filteredVenues?.map(venue => (
-            <VenueCard
-              key={venue.id}
-              venue={venue}
-              date={new Date(date).toISOString().split("T")[0]}
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
               onBookVenue={onBookVenue}
               refreshVenues={refreshVenues}
             />

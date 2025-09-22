@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from '../Config/apiconfig';
 import { useState } from 'react';
 import Loader from './Loader';
-<<<<<<< HEAD
 import { LogInIcon } from 'lucide-react';
 // Import the LoginModal component
 import LoginModal from './LoginModal'; // Add this import
@@ -26,15 +25,6 @@ const VenueCard = ({ venue, onBookVenue, date, refreshVenues }) => {
 
   console.log(venue);
 
-=======
-
-
-const VenueCard = ({ venue, onBookVenue,date,refreshVenues }) => {
-  const { user } = useSelector((state) => state.auth);
-  const navigate = useNavigate();
-  const [loading,setLoading]=useState(false)
-console.log(venue)
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
   const getCategoryColor = (category) => {
     const colors = {
       lab: 'bg-blue-100 text-blue-800',
@@ -49,20 +39,12 @@ console.log(venue)
   const bookingDetails = venue?.booking;
   const bookedBy = bookingDetails?.bookedBy;
   const bookedTime = bookingDetails?.timeSlot;
-<<<<<<< HEAD
 
-=======
-// console.log(bookedBy)
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
   const getAvailabilityStatus = () => {
     if (!bookingDetails) {
       return {
         text: 'Available',
-<<<<<<< HEAD
         className: 'bg-green-600 text-white',
-=======
-        className: 'bg-success text-white',
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
         dotClass: 'bg-green-400'
       };
     }
@@ -74,28 +56,16 @@ console.log(venue)
   };
 
   const handleCancelBooking = async (venueName) => {
-<<<<<<< HEAD
     try {
       setLoading(true);
       const res = await axiosInstance.delete(`/bookings`, {
         data: {
           day: venue.selectedDay,
           date: date,
-=======
-    // console.log(id)
-    // console.log(venue)
-    try {
-      setLoding(true)
-      const res = await axiosInstance.delete(`/bookings`, {
-        data: {
-          day: venue.selectedDay,
-          date:date,
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
           timeSlot: venue.availableTimes,
           venue: venueName
         }
       });
-<<<<<<< HEAD
       console.log(res.data.message);
       refreshVenues();
     } catch (error) {
@@ -111,27 +81,11 @@ console.log(venue)
         <Loader />
       </div>
     );
-=======
-      console.log(res.data.message)
-      refreshVenues()
-    } catch (error) {
-      console.error("Error canceling booking:", error);
-    }finally{
-      setLoding(false)
-    }
-  };
-
-  if(loading){
-    return(
-      <Loader/>
-    )
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
   }
 
   const status = getAvailabilityStatus();
 
   return (
-<<<<<<< HEAD
     <>
       <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100">
         {/* Venue Image + Status */}
@@ -241,26 +195,10 @@ console.log(venue)
                 <span>Login Required to Book</span>
               </button>
             )}
-=======
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-      {/* Venue Image + Status */}
-      <div className="relative">
-        <img
-          src={venue.image}
-          alt={venue.name}
-          className="w-full h-48 object-cover"
-        />
-
-        <div className={`absolute top-3 left-3 px-2 py-1 rounded-full text-xs font-medium ${status.className}`}>
-          <div className="flex items-center gap-1">
-            <div className={`w-2 h-2 rounded-full ${status.dotClass}`}></div>
-            {status.text}
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
           </div>
         </div>
       </div>
 
-<<<<<<< HEAD
       {/* Login Modal - moved outside the card */}
       {loginModalOpen && (
         <LoginModal 
@@ -273,87 +211,3 @@ console.log(venue)
 };
 
 export default VenueCard;
-=======
-      {/* Content */}
-      <div className="p-4">
-        <div className="flex justify-between items-start mb-3">
-          <h2 className="text-md font-semibold text-gray-900">{venue.name}</h2>
-       
-          {venue && (
-            <span className={`px-2 py-1 rounded-full text-xs font-small ${getCategoryColor(venue.category)}`}>
-              {venue.category.toUpperCase()}
-            </span>
-          )}
-        </div>
-
-        <div className="text-sm flex justify-between text-gray-600 mb-2">
-          <p>Capacity: {venue.capacity} people</p>
-          {venue.selectedDay && (
-            <p>Day: <span className="capitalize font-medium">{venue.selectedDay}</span></p>
-          )}
-        </div>
-
-        {/* Timeslot / Booking Info */}
-        <div className="mb-2 flex justify-between h-5 lg:h-6">
-          {!bookingDetails ? (
-            <>
-              <h4 className="text-sm font-medium text-gray-900 mb-2">Available Time</h4>
-              {venue?.availableTimes && (
-                <span className="px-2 py-1  bg-green-100 text-green-800 text-xs rounded-md">
-                  {venue.availableTimes}
-                </span>
-              )}
-            </>
-          ) : (
-            <>
-              <h4 className="text-sm font-medium text-gray-900 ">Unavailable Time</h4>
-              <span className="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-md">
-                {bookedTime}
-              </span>
-            </>
-          )}
-        </div>
-
-   
-
-        {/* Action button */}
-        <div className='flex flex-col text-sm md:flex-row w-full relative gap-1'>
-          {user ? (
-            !bookingDetails ? (
-              <button
-                onClick={() => onBookVenue(venue)}
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-small py-2 px-4 rounded-md transition-colors"
-              >
-                Book Now
-              </button>
-            ) : (
-              <button
-                onClick={() => handleCancelBooking(venue?.booking?.venue)}
-                className=" w-full md:w-max h-12 bg-red-500 hover:bg-red-600 text-white   px-4 rounded-md transition-colors"
-              >
-                Cancel Booking
-              </button>
-            )
-          ) : (
-            <button
-              className="text-center w-full bg-gray-500 hover:bg-gray-600 py-2 px-4 rounded-md text-white text-sm transition-colors"
-              onClick={() => navigate('/login')}
-            >
-              Login required to book
-            </button>
-          )}
-               {/* Show who booked */}
-        {bookedBy && (
-          <p className="flex flex-col w-full h-12 justify-center items-center bg-green-600 rounded-md px-4 text-center  text-gray-700 mb-2  transition-colors">
-            <span>Booked By: </span>
-            <span className="">{(bookedBy?.username).toUpperCase()}</span>
-          </p>
-        )}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default VenueCard;
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc

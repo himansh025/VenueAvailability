@@ -36,8 +36,4 @@ function Loader() {
     )
 }
 
-<<<<<<< HEAD
 export default Loader;
-=======
-export default Loader
->>>>>>> 75695b22ada2085138891a591339d35f252a19fc
