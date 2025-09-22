@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from "react";
 import Input from "../Component/Input";
 import Button from "../Component/Button";
+<<<<<<< HEAD
+import AddUserModal from "./Admin/UserMangement/AddUserModal"; 
+import axiosInstance from "../Config/apiconfig"; 
+import UpdateUserModal from "./Admin/UserMangement/UpdateUserModal";
+
+=======
 import AddUserModal from "./Admin/UserMangement/AddUserModal";
 import axiosInstance from "../Config/apiconfig";
 import UpdateUserModal from "./Admin/UserMangement/UpdateUserModal";
+>>>>>>> 75695b22ada2085138891a591339d35f252a19fc
 export default function UserManagement() {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState();
@@ -14,16 +21,27 @@ export default function UserManagement() {
 
   const getUsers = async () => {
     try {
+<<<<<<< HEAD
+      const res = await axiosInstance.get(`/users`); 
+      // console.log("res of users", res.data) 
+      console.log("res of users", res.data) 
+=======
       const res = await axiosInstance.get(`/users`);
       // console.log("res of users", res.data)
+>>>>>>> 75695b22ada2085138891a591339d35f252a19fc
       setUsers(res.data)
     } catch (error) {
       console.error("Error fetching venues:", error);
     }
   };
 
+<<<<<<< HEAD
+ 
+  console.log(users) 
+=======
 
   // console.log(users)
+>>>>>>> 75695b22ada2085138891a591339d35f252a19fc
   const filteredUsers = users.filter((u) => {
     if (search != null) {
       return u?.name?.toLowerCase().includes(search.toLowerCase())
@@ -59,11 +77,23 @@ export default function UserManagement() {
 
     )
   }
+<<<<<<< HEAD
+  const upateUserhandle = async (id) => { 
+    // console.log(id)
+    setSelectedUserId(id);  
+    setUpdateUserModal(true)
+      // console.log(updateUserModal) 
+    console.log(id)
+    setSelectedUserId(id);  
+    setUpdateUserModal(true)
+      console.log(updateUserModal) 
+=======
   const upateUserhandle = async (id) => {
     // console.log(id)
     setSelectedUserId(id);  
     setUpdateUserModal(true)
       // console.log(updateUserModal)
+>>>>>>> 75695b22ada2085138891a591339d35f252a19fc
 
     
   }

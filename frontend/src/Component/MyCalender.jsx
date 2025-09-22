@@ -1,7 +1,11 @@
 import { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+<<<<<<< HEAD
+import { format } from "date-fns"; 
+=======
 import { format } from "date-fns";
+>>>>>>> 75695b22ada2085138891a591339d35f252a19fc
 import { days } from "../utils/dayTimeSlot";
 
 export default function MyCalendar({ onDateChange }) {
@@ -36,7 +40,15 @@ export default function MyCalendar({ onDateChange }) {
             {format(date, "yyyy-MM-dd")} ({days[date.getDay()]})
           </span>
         </p>
+<<<<<<< HEAD
+      </div> 
+
+  </div>
+)
+}
+=======
       </div>
     </div>
   );
 }
+>>>>>>> 75695b22ada2085138891a591339d35f252a19fc

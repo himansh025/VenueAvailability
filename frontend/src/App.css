@@ -40,6 +40,10 @@
 .read-the-docs {
   color: #888;
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 75695b22ada2085138891a591339d35f252a19fc
 
 
 .react-calendar__tile--now {
@@ -52,4 +56,10 @@
   background: #3b82f6 !important; /* Tailwind's blue-500 */
   color: white !important;
   border-radius: 9999px !important; /* fully rounded */
+<<<<<<< HEAD
 }
+=======
+>>>>>>> 37946e52a67d0a2a78bafc7e2c5d4ac816add528
+=======
+}
+>>>>>>> 75695b22ada2085138891a591339d35f252a19fc
