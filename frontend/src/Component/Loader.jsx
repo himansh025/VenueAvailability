@@ -15,6 +15,7 @@ function Loader() {
         alignItems: 'center',
         zIndex: 9999,
       }}
+       className="mt-16"
     >
      <div style={{ textAlign: 'center' }}>
         <div

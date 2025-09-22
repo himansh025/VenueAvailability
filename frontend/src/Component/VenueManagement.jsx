@@ -9,7 +9,7 @@ import BookingModal from './BookingModal';
 
 export default function VenueManagement() {
   const { user } = useSelector((state) => state.auth);
-  
+  // console.log(days)
   const [searchFilters, setSearchFilters] = useState({
     search: '',
     category: 'all',

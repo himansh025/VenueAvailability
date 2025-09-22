@@ -4,28 +4,30 @@ import Button from "../Component/Button";
 import AddUserModal from "./Admin/UserMangement/AddUserModal"; 
 import axiosInstance from "../Config/apiconfig"; 
 import UpdateUserModal from "./Admin/UserMangement/UpdateUserModal";
+import Loader from "./Loader.jsx";
 
 export default function UserManagement() {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState();
   const [addUserModal, setAddUserModal] = useState(false)
   const [updateUserModal, setUpdateUserModal] = useState(false)
+    const[loading, setLoading] = useState(true);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [deleteUser, setDeleteUser] = useState(false)
 
   const getUsers = async () => {
     try {
       const res = await axiosInstance.get(`/users`); 
-      // console.log("res of users", res.data) 
-      console.log("res of users", res.data) 
       setUsers(res.data)
     } catch (error) {
       console.error("Error fetching venues:", error);
     }
+    finally {
+        setLoading(false);
+    }
   };
 
  
-  console.log(users) 
   const filteredUsers = users.filter((u) => {
     if (search != null) {
       return u?.name?.toLowerCase().includes(search.toLowerCase())
@@ -72,6 +74,11 @@ export default function UserManagement() {
       console.log(updateUserModal) 
 
     
+  }
+  if(loading)  {
+      return (
+          <Loader/>
+      )
   }
 
  

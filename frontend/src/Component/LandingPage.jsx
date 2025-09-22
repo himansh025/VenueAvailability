@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, Users, Clock, MapPin, CheckCircle, Star, ArrowRight, Menu, X, Building2 } from 'lucide-react';
 import Navbar from './Navbar';
-import { useDispatch, useSelector } from 'react-redux';
 import  Lab  from '../assets/lab.webp';
 import  Room from '../assets/class.jpg';
 
@@ -11,7 +10,7 @@ const LandingPage = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleGetStarted = () => {
-    navigate('/dashboard');  
+    navigate('/dashboard');
   };
 
   const handleLogin = () => {

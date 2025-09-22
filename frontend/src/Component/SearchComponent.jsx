@@ -5,7 +5,7 @@ import { Calendar, Search, Filter, Clock } from "lucide-react";
 const SearchComponent = ({ onSearchChange, filters, timeSlots }) => {
   const [localFilters, setLocalFilters] = useState(filters);
   const [calendarOpen, setCalendarOpen] = useState(false);
-
+console.log(timeSlots)
   useEffect(() => {
     onSearchChange(localFilters);
   }, [localFilters]);

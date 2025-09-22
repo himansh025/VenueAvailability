@@ -4,10 +4,11 @@ import { LogInIcon, LogOut, Menu, School2Icon, UsersIcon, X, User } from 'lucide
 import { logout } from '../Store/slicer';
 import { useState } from 'react';
 import { MdDashboard, MdOutlineLogin, MdWorkspaces } from 'react-icons/md';
-import { FaSignOutAlt, FaTasks } from 'react-icons/fa';
-import LoginModal from './LoginModal';  
+import LoginModal from './LoginModal';
+import {BiSolidSchool} from "react-icons/bi";
 
-function Navbar() {
+function
+Navbar() {
   const dispatch = useDispatch();
   const { user } = useSelector(state => state.auth);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -55,15 +56,18 @@ function Navbar() {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-6">
-              <Link
+              {user&&(
+
+                <Link
                 to="/"
                 className="flex items-center space-x-1 px-3 py-2 rounded-lg hover:bg-gray-700 transition-colors duration-200"
-              >
+                >
                 <MdDashboard className="h-4 w-4" />
                 <span>Dashboard</span>
               </Link>
+              )}
 
-              {user && user.role === "admin" && (
+              {user && user.role === "superadmin" && (
                 <Link
                   to="/all-users"
                   className="flex items-center space-x-1 px-3 py-2 rounded-lg hover:bg-gray-700 transition-colors duration-200"
@@ -90,7 +94,7 @@ function Navbar() {
                   
                   <button
                     onClick={handleLogout}
-                    className="flex items-center space-x-2 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors duration-200"
+                    className="hidden md:flex items-center space-x-2 px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors duration-200"
                   >
                     <LogOut className="h-4 w-4" />
                     <span className="hidden sm:block">Logout</span>
@@ -99,7 +103,7 @@ function Navbar() {
               ) : (
                 <button
                   onClick={openLoginModal}
-                  className="flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors duration-200"
+                  className="hidden md:flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors duration-200"
                 >
                   <LogInIcon className="h-4 w-4" />
                   <span>Login</span>
@@ -123,33 +127,34 @@ function Navbar() {
                 
                 {user ? (
                   <>
-                    {user.role === "admin" && (
+                    {user.role === "superadmin" && (
+                        <>
+
                       <Link
                         to="/all-users"
                         className="flex items-center space-x-3 py-3 px-3 rounded-lg hover:bg-gray-700 transition-colors duration-200"
                         onClick={() => setMobileMenuOpen(false)}
                       >
-                        <UsersIcon className="h-5 w-5 text-green-400" />
+                        <UsersIcon className="h-5 w-5 text-blue-400" />
                         <span>All Members</span>
                       </Link>
+
+                        <Link
+                        to="/venues"
+                        className="flex items-center space-x-3 py-3 px-3 rounded-lg hover:bg-gray-700 transition-colors duration-200"
+                        onClick={() => setMobileMenuOpen(false)}
+                    >
+                  <BiSolidSchool className="h-5 w-5 text-blue-400" />
+                  <span>Venues</span>
+                  </Link>
+                        </>
                     )}
-                    
-                    <div className="pt-3 border-t border-gray-700">
-                      <div className="flex items-center space-x-3 py-2 px-3 bg-gray-700 rounded-lg mb-2">
-                        <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center">
-                          <User className="h-4 w-4 text-white" />
-                        </div>
-                        <div>
-                          <div className="font-medium text-sm">{user.name || 'User'}</div>
-                          <div className="text-gray-400 text-xs capitalize">{user.role}</div>
-                        </div>
-                      </div>
-                      
+                    <div className="pt-3    border-t border-gray-700">
                       <button
                         onClick={handleLogout}
-                        className="w-full flex items-center space-x-3 py-3 px-3 bg-red-600 hover:bg-red-700 rounded-lg transition-colors duration-200"
+                        className=" flex justify-center items-center space-x-2 ml-4 py-1 px-3 bg-red-600 hover:bg-red-700 rounded-lg transition-colors duration-200"
                       >
-                        <LogOut className="h-5 w-5" />
+                        <LogOut className="h-4 w-4" />
                         <span>Logout</span>
                       </button>
                     </div>
@@ -157,7 +162,7 @@ function Navbar() {
                 ) : (
                   <button
                     onClick={openLoginModal}
-                    className="flex items-center space-x-3 py-3 px-3 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors duration-200"
+                    className=" flex items-center space-x-3 py-3 px-3 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors duration-200"
                   >
                     <LogInIcon className="h-5 w-5" />
                     <span>Login</span>
