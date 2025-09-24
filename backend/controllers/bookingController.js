@@ -1,6 +1,4 @@
-const { timeSlots } = require("../../frontend/src/utils/dayTimeSlot");
 const Booking = require("../models/bookModel");
-
 // Create booking
 exports.createBooking = async (req, res) => {
   try {
@@ -66,14 +64,14 @@ exports.getBookings = async (req, res) => {
 exports.cancelBooking = async (req, res) => {
   try {
     const { day, timeSlot, date, venue } = req.body;
-    // console.log(day, date, timeSlot, venue);
+    console.log(day, date, timeSlot, venue);
 
     if (!day || !date || !timeSlot || !venue) {
       return res.status(400).json({ message: "day, date, time and venue are required" });
     }
 
     const fdate = new Date(date);
-    // console.log(fdate);
+    console.log(fdate);
 
     const booking = await Booking.findOne({
       venue,
@@ -86,8 +84,8 @@ exports.cancelBooking = async (req, res) => {
       return res.status(404).json({ message: "Booking not found with the matching details" });
     }
 
-    // console.log(booking?.bookedBy.userId);
-    // console.log(req?.user?._id);
+    console.log(booking?.bookedBy.userId);
+    console.log(req?.user?._id);
 
     // Only user who booked OR admin can cancel
     if (
